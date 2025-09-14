@@ -18,4 +18,15 @@ public class CliApp
     {
         
     }
+    
+    private void ShowMainMenu()
+    {
+        Console.WriteLine("\n=== Main Menu ===");
+        Console.WriteLine("1) Manage users");
+        Console.WriteLine("2) Manage posts");
+        Console.WriteLine("3) Manage comments");
+        Console.WriteLine("0) Exit");
+        Console.Write("Enter choice: ");
+    }
+    
 }
