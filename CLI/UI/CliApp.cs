@@ -4,14 +4,14 @@ namespace CLI.UI;
 
 public class CliApp
 {
-    IUser UserRepository { get; set; }
-    IComment CommentRepository { get; set; }
-    IPost PostRepository { get; set; }
+    private readonly IUser userRepository;
+    private readonly IComment commentRepository;
+    private readonly IPost postRepository;
     public CliApp(IUser userRepository,IComment commentRepository, IPost postRepository)
     {
-        UserRepository = userRepository;
-        CommentRepository = commentRepository;
-        PostRepository = postRepository;
+        this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
     public async Task StartAsync()
