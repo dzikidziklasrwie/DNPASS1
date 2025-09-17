@@ -45,6 +45,70 @@ public class ManagePostsView
             }
         }
     }
+    
+    private void Menu()
+    {
+        Console.WriteLine("\n Manage Posts :) HAVE A GREAT DAY");
+        Console.WriteLine("1) Create post");
+        Console.WriteLine("2) View specific post with comments");
+        Console.WriteLine("3) View post overview(id,title)");
+        Console.WriteLine("4) add comment to post");
+        Console.WriteLine("0) Back");
+        Console.Write("Enter choice: ");
+    }
+    
+    private async Task CreatePostAsync()
+    {
+        Console.Write("Enter title: ");
+        var title = Console.ReadLine() ?? string.Empty;
+        Console.Write("Enter body: ");
+        var body = Console.ReadLine() ?? string.Empty;
+        Console.Write("Enter user id: ");
+        var userId = int.Parse(Console.ReadLine() ?? "0");
+        Post newPost = new();
+        newPost.Title = title;
+        newPost.Body = body;
+        newPost.UserId = userId;
+  
+        await postRepository.AddAsync(newPost);
+        Console.WriteLine($"Post created BY {newPost.UserId} {newPost.Title} ");
+    }
+    
+    
+    private async Task ViewPostAsync()
+    {
+        Console.Write("Enter post id: ");
+        int? postId = int.Parse(Console.ReadLine());
+        if (postId == null)
+        {
+            Console.WriteLine("Post ID is required. Null will be replace by id 1 ");
+
+        }
+
+        var post = await postRepository.GetSingleAsync(postId??1);
+        if (post == null)
+        {
+            Console.WriteLine("Post not found :( check id and try again");
+            return;
+        }
+
+        Console.WriteLine($"\n Title: {post.Title}");
+        Console.WriteLine($"\n Body: {post.Body}");
+
+        var comments = commentRepository.GetMany().ToList();
+        foreach (var c in comments)
+        {
+            if (!comments.Any())
+            {
+                Console.WriteLine("Comments not found :( check id and try again");
+            }
+            if (c.PostId == postId)
+            {
+                Console.WriteLine($"Comment: {c.Body}");
+            }
+        }
+
+    }
 
     private Task PostOverviewAsync()
     {
@@ -78,69 +142,12 @@ public class ManagePostsView
         Console.WriteLine("Comment added."); 
     }
 
-private void Menu()
-    {
-        Console.WriteLine("\n Manage Posts :) HAVE A GREAT DAY");
-        Console.WriteLine("1) Create post");
-        Console.WriteLine("2) View specific post with comments");
-        Console.WriteLine("3) View post overview(id,title)");
-        Console.WriteLine("4) add comment to post");
-        Console.WriteLine("0) Back");
-        Console.Write("Enter choice: ");
-    }
-    private async Task CreatePostAsync()
-    {
-        Console.Write("Enter title: ");
-        var title = Console.ReadLine() ?? string.Empty;
-        Console.Write("Enter body: ");
-        var body = Console.ReadLine() ?? string.Empty;
-        Console.Write("Enter user id: ");
-        var userId = int.Parse(Console.ReadLine() ?? "0");
-        Post newPost = new();
-        newPost.Title = title;
-        newPost.Body = body;
-        newPost.UserId = userId;
-  
-        await postRepository.AddAsync(newPost);
-        Console.WriteLine($"Post created BY {newPost.UserId} {newPost.Title} ");
-    }
+
+    
     
 
     
-    private async Task ViewPostAsync()
-    {
-        Console.Write("Enter post id: ");
-        int? postId = int.Parse(Console.ReadLine());
-        if (postId == null)
-        {
-            Console.WriteLine("Post ID is required. Null will be replace by id 1 ");
-
-        }
-
-        var post = await postRepository.GetSingleAsync(postId??1);
-        if (post == null)
-        {
-            Console.WriteLine("Post not found :( check id and try again");
-            return;
-        }
-
-        Console.WriteLine($"\n Title: {post.Title}");
-        Console.WriteLine($"\n Body: {post.Body}");
-
-        var comments = commentRepository.GetMany().ToList();
-        foreach (var c in comments)
-        {
-            if (!comments.Any())
-            {
-                Console.WriteLine("Comments not found :( check id and try again");
-            }
-            if (c.PostId == postId)
-            {
-                Console.WriteLine(c.Body);
-            }
-        }
-
-    }
+   
     
     
     
