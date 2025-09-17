@@ -53,6 +53,8 @@ public Task DeleteAsync(int id)
         return Task.FromResult(postToRetrieve);
     }
 
+   
+
     public IQueryable<Post> GetMany()
     {
         return posts.AsQueryable();
